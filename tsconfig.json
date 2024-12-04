@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./build",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "declaration": true,  // добавляем эту строку
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
