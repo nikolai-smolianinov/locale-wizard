@@ -23,15 +23,12 @@ jobs:
       - id: check
         name: Check if version has been updated
         run: |
-          # Get version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           
-          # Get latest published version from npm
           PUBLISHED_VERSION=$(npm view locale-wizard version || echo "0.0.0")
           echo "published_version=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
           
-          # Compare versions
           if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
             echo "is_new_version=true" >> $GITHUB_OUTPUT
             echo "Version has been updated from $PUBLISHED_VERSION to $CURRENT_VERSION"
@@ -59,16 +56,22 @@ jobs:
         run: |
           echo "Building version ${{ needs.version-check.outputs.current_version }} (previous was ${{ needs.version-check.outputs.published_version }})"
 
-  build:
+  create-release:
+    needs: [version-check, build-and-pack]
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
+    if: needs.version-check.outputs.is_new_version == 'true'
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
+          tag_name: v${{ needs.version-check.outputs.current_version }}
+          release_name: Release v${{ needs.version-check.outputs.current_version }}
+          draft: false
+          prerelease: false
 
   publish-npm:
     needs: build
@@ -84,3 +87,14 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
+
+  build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
