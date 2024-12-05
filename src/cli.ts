@@ -6,8 +6,10 @@ import { program } from "commander";
 import { LocaleWizard } from "@/index";
 import { WizardConfig } from "@/types/public";
 
-program.option("--translate", "Translate missing locale keys").parse();
-program.option("--clean", "Remove extra keys").parse();
+program
+  .option("--translate", "Translate missing locale keys")
+  .option("--clean", "Remove extra keys")
+  .parse();
 
 const options = program.opts();
 
@@ -58,7 +60,7 @@ const bootstrap = async () => {
     }
   }
 
-  if (options.translate) {
+  if (options.clean) {
     try {
       await wizard.removeExtraKeys();
     } catch {
