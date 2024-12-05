@@ -8,9 +8,42 @@ on:
     types: [created]
 
 jobs:
-  build-and-release:
+  version-check:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    outputs:
+      is_new_version: ${{ steps.check.outputs.is_new_version }}
+      current_version: ${{ steps.check.outputs.current_version }}
+      published_version: ${{ steps.check.outputs.published_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: check
+        name: Check if version has been updated
+        run: |
+          # Get version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get latest published version from npm
+          PUBLISHED_VERSION=$(npm view locale-wizard version || echo "0.0.0")
+          echo "published_version=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
+          
+          # Compare versions
+          if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "is_new_version=true" >> $GITHUB_OUTPUT
+            echo "Version has been updated from $PUBLISHED_VERSION to $CURRENT_VERSION"
+          else
+            echo "is_new_version=false" >> $GITHUB_OUTPUT
+            echo "Version is unchanged at $CURRENT_VERSION"
+          fi
+
+  build-and-pack:
+    needs: version-check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && needs.version-check.outputs.is_new_version == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,9 +52,12 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build
-      - run: npm run release
+      - run: npm pack
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
+      - name: Log version change
+        run: |
+          echo "Building version ${{ needs.version-check.outputs.current_version }} (previous was ${{ needs.version-check.outputs.published_version }})"
 
   build:
     runs-on: ubuntu-latest
