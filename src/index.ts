@@ -1,5 +1,7 @@
 import path from "node:path";
+import * as process from "node:process";
 import OpenAI from "openai";
+import { logger } from "@/logger";
 import { translateLocaleKeys } from "@/translation/translate";
 import { Locales, WizardConfig } from "@/types/public";
 import { deleteNestedKey } from "@/utils/delete-nested-key";
@@ -30,10 +32,19 @@ export class LocaleWizard {
     this.localesPath = path.resolve(process.cwd(), config.localesPath);
     this.ignoreNamespaces = config.ignoreNamespaces || [];
 
-    this.mainLocaleFiles = getLocaleNamespaces(
+    const mainLocaleFiles = getLocaleNamespaces(
       config.localesPath,
       config.sourceLocale,
     );
+
+    if (mainLocaleFiles.length === 0) {
+      logger.red(
+        `No locale files for source locale "${config.sourceLocale}" found at "${this.localesPath}/${config.sourceLocale}"`,
+      );
+      process.exit();
+    }
+
+    this.mainLocaleFiles = mainLocaleFiles;
 
     this.allMainLocaleKeysValuePairs = getAllLocaleKeyValues(
       this.localesPath,

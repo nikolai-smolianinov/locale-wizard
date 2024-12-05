@@ -9,7 +9,7 @@
     "build:js": "esbuild src/index.ts --bundle --minify --platform=node --target=es2020 --outfile=dist/index.js --alias:@=./src --packages=external",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist && tsc-alias",
     "publish": "npm run build && npm pack && npm publish",
-    "dev": "esbuild src/entry.ts --bundle --platform=node --target=es2020 --outfile=build/index.js --alias:@=./src --packages=external && node build/index.js"
+    "dev": "esbuild src/dev/entry.ts --bundle --platform=node --target=es2020 --outfile=build/index.js --alias:@=./src --packages=external && node build/index.js NODE_ENV=local"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,6 +21,7 @@
     "@types/node": "^22.8.7",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
+    "dotenv": "^16.4.7",
     "esbuild": "^0.24.0",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",

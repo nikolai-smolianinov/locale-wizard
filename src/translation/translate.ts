@@ -18,12 +18,16 @@ export async function translateLocaleKeys(
     return process.exit();
   }
 
-  logger.blue(`Translating "${targetLocale}" locale`);
-
   const chunks = splitRecord(keyValuePairs);
 
   let result: Record<string, string> = {};
   let tokenCost = 0;
+
+  if (Object.keys(keyValuePairs).length === 0) {
+    return result;
+  }
+
+  logger.blue(`Translating "${targetLocale}" locale`);
 
   for (const chunk of chunks) {
     const translatedChunk = await translateChunk.call(
