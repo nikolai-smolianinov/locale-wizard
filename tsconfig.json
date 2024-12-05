@@ -5,12 +5,15 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "./build",
+    "outDir": "./dist",
+    "declaration": true,  // добавляем эту строку
+    "emitDeclarationOnly": true,
     "baseUrl": "./",
     "sourceMap": true,
-    "declaration": true,  // добавляем эту строку
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
