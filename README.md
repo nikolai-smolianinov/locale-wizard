@@ -15,8 +15,7 @@ npm install locale-wizard -D
 - 🧹 Automatic cleanup of unused translation keys
 - ⚡️ Easy integration with existing projects
 
-## Quick Start
-
+## 1. Usage: node.js
 ```typescript
 import { LocaleWizard } from "locale-wizard";
 
@@ -39,7 +38,25 @@ Cleans up any key that exists in any `targetLocales` locale but doesnt exist in 
 ```typescript
 await wizard.translate();
 ```
-
+## 2. Usage: terminal
+Terminal usage requires a file `.locale-wizard.json` in the root of your project. Format is similar to type `WizardConfig`
+```json
+{
+  "sourceLocale": "en",
+  "targetLocales": ["ru", "es", "de"],
+  "localesPath": "./src/locales",
+  "openAiKey": "<your-openai-api-key>"
+}
+```
+To translate enter:
+```bash
+locale-wizard --translate
+```
+To clean extra keys:
+```bash
+locale-wizard --clean
+```
+___
 
 ## Configuration
 
