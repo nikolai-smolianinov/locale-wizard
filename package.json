@@ -1,11 +1,11 @@
 {
   "name": "locale-wizard",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Automatic JSON localization files translator",
   "repository": "https://github.com/nikolai-smolianinov/locale-wizard",
   "author": "Nikolai Smolianinov <niko_lie@icloud.com> (https://github.com/nikolai-smolianinov)",
   "scripts": {
-    "build": "npm run build:js && npm run build:types && build:cli",
+    "build": "npm run build:js && npm run build:types && npm run build:cli",
     "build:js": "esbuild src/index.ts --bundle --minify --platform=node --target=es2020 --outfile=dist/src/index.js --alias:@=./src --packages=external",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/src && tsc-alias",
     "build:cli": "esbuild src/cli.ts --bundle --platform=node --target=es2020 --outfile=dist/cli.js --alias:@=./src --packages=external --external:./src/*",
