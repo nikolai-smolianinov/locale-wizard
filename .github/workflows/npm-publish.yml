@@ -15,8 +15,11 @@ jobs:
       is_new_version: ${{ steps.check.outputs.is_new_version }}
       current_version: ${{ steps.check.outputs.current_version }}
       published_version: ${{ steps.check.outputs.published_version }}
+      tag_exists: ${{ steps.check-tag.outputs.tag_exists }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,6 +38,15 @@ jobs:
           else
             echo "is_new_version=false" >> $GITHUB_OUTPUT
             echo "Version is unchanged at $CURRENT_VERSION"
+          fi
+      - id: check-tag
+        name: Check if tag exists
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if git rev-parse "v$CURRENT_VERSION" >/dev/null 2>&1; then
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
           fi
 
   build-and-publish:
@@ -59,7 +71,9 @@ jobs:
   create-release:
     needs: [version-check, build-and-publish]
     runs-on: ubuntu-latest
-    if: needs.version-check.outputs.is_new_version == 'true'
+    if: |
+      needs.version-check.outputs.is_new_version == 'true' && 
+      needs.version-check.outputs.tag_exists == 'false'
     permissions:
       contents: write
     steps:
