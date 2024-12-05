@@ -36,7 +36,6 @@ export const writeJsonToFile = (filePath: string, data: object) => {
     const jsonContent = JSON.stringify(data, null, 2);
     fs.writeFileSync(absolutePath, jsonContent, "utf8");
 
-    logger.log(`Successfully wrote to ${absolutePath}`);
     return true;
   } catch (error: any) {
     logger.red(`Error writing file ${filePath}: ${error.message}`);

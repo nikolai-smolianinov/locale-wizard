@@ -107,7 +107,13 @@ export class LocaleWizard {
 
         if (extraKeys.length > 0) {
           for (const key of extraKeys) {
-            newContent = deleteNestedKey(content, key.split(":")[1]);
+            const [ns, ns_key] = key.split(":");
+
+            if (`${ns}.json` === file) {
+              newContent = deleteNestedKey(content, ns_key);
+
+              logger.log(`"${locale}/${file}" extra key "${ns_key}" removed`);
+            }
           }
 
           writeJsonToFile(filePath, newContent);
