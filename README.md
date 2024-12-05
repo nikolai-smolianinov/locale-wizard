@@ -24,17 +24,22 @@ const config: WizardConfig = {
   sourceLocale: "en",
   targetLocales: ["ru", "es", "de"],
   localesPath: "./src/locales",
-  openAiKey: "your-openai-api-key"
+  openAiKey: "<your-openai-api-key>"
 };
 
 const wizard = new LocaleWizard(config);
-
-// Translate all files
-await wizard.translate();
-
-// Clean up unused keys
-await wizard.removeExtraKeys();
 ```
+
+Translates all files in `sourceLocale` to every language in `targetLocales`
+```typescript
+await wizard.translate();
+```
+
+Cleans up any key that exists in any `targetLocales` locale but doesnt exist in `sourceLocale`
+```typescript
+await wizard.translate();
+```
+
 
 ## Configuration
 
@@ -83,7 +88,9 @@ The package supports 70+ languages including:
 
 ## License
 
-MIT © Nikolai Smolianinov
+[MIT with No Republishing](LICENSE) © Nikolai Smolianinov
+
+This project is MIT licensed with an additional condition prohibiting republishing on package registries under a different name without explicit permission.
 
 ---
 
