@@ -37,7 +37,7 @@ jobs:
             echo "Version is unchanged at $CURRENT_VERSION"
           fi
 
-  build-and-pack:
+  build-and-publish:
     needs: version-check
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && needs.version-check.outputs.is_new_version == 'true'
@@ -49,15 +49,15 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build
-      - run: npm pack
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
       - name: Log version change
         run: |
-          echo "Building version ${{ needs.version-check.outputs.current_version }} (previous was ${{ needs.version-check.outputs.published_version }})"
+          echo "Published version ${{ needs.version-check.outputs.current_version }} (previous was ${{ needs.version-check.outputs.published_version }})"
 
   create-release:
-    needs: [version-check, build-and-pack]
+    needs: [version-check, build-and-publish]
     runs-on: ubuntu-latest
     if: needs.version-check.outputs.is_new_version == 'true'
     permissions:
@@ -72,29 +72,6 @@ jobs:
           release_name: Release v${{ needs.version-check.outputs.current_version }}
           draft: false
           prerelease: false
-
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
-
-  build:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
+          body: |
+            Release of version ${{ needs.version-check.outputs.current_version }}
+            Package has been published to npm.
