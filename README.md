@@ -88,9 +88,7 @@ The package supports 70+ languages including:
 
 ## License
 
-[MIT with No Republishing](LICENSE) © Nikolai Smolianinov
-
-This project is MIT licensed with an additional condition prohibiting republishing on package registries under a different name without explicit permission.
+[MIT](LICENSE) © Nikolai Smolianinov
 
 ---
 
