@@ -1,6 +1,6 @@
 {
   "name": "locale-wizard",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Automatic JSON localization files translator",
   "repository": "https://github.com/nikolai-smolianinov/locale-wizard",
   "author": "Nikolai Smolianinov <niko_lie@icloud.com> (https://github.com/nikolai-smolianinov)",
@@ -15,8 +15,10 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.8.7",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
