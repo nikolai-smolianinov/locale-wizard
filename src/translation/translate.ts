@@ -58,7 +58,9 @@ export async function translateChunk(
     process.exit();
   }
 
-  const prompt = getPrompt(chunk, targetLocale);
+  const prompt = this.customPrompt
+    ? this.customPrompt(targetLocale, chunk)
+    : getPrompt(chunk, targetLocale);
 
   try {
     const completion = await this.openai.chat.completions.create({

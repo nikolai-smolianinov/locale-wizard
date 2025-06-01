@@ -102,8 +102,11 @@ export interface WizardConfig {
    * Use it if you need to include more context
    *
    * @param locale - current locale that is being translated, for example - "en"
-   * @param json - key-value json pairs, for example {"hello": "Hello!", "saveBtnText": "Click to save"} etc.
+   * @param keyValuePairs - key-value pairs, for example {hello: "Hello!", saveBtnText: "Click to save"} etc.
    * @return string - a string that will be passed as prompt to ChatGPT
    */
-  customPrompt?: (locale: string, json: string) => string;
+  customPrompt?: (
+    locale: string,
+    keyValuePairs: Record<string, string>,
+  ) => string;
 }
