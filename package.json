@@ -40,7 +40,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "openai": "^4.75.0"
+    "openai": "5.0.1"
   },
   "keywords": [
     "i18n",

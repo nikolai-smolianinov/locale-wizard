@@ -23,7 +23,8 @@ const config: WizardConfig = {
   sourceLocale: "en",
   targetLocales: ["ru", "es", "de"],
   localesPath: "./src/locales",
-  openAiKey: "<your-openai-api-key>"
+  openAiKey: "<your-openai-api-key>", 
+  chatGptModel: 'gpt-4o'
 };
 
 const wizard = new LocaleWizard(config);
@@ -36,7 +37,7 @@ await wizard.translate();
 
 Cleans up any key that exists in any `targetLocales` locale but doesnt exist in `sourceLocale`
 ```typescript
-await wizard.translate();
+await wizard.removeExtraKeys();
 ```
 ## 2. Usage: terminal
 Terminal usage requires a file `.locale-wizard.json` in the root of your project. Format is similar to type `WizardConfig`
@@ -62,24 +63,34 @@ ___
 
 ```typescript
 interface WizardConfig {
-  // Source language for translations
-  sourceLocale: Locale;
-  
-  // Languages you want to translate into
-  targetLocales: Locale[];
-  
-  // Directory containing your locale files
-  localesPath: string;
-  
-  // Namespaces to exclude from translation
-  ignoreNamespaces?: string[];
-  
-  // Your OpenAI API key
-  // Get it at: https://platform.openai.com/api-keys
-  openAiKey?: string;
-  
-  // OpenAI model to use (defaults to "gpt-4")
-  chatGptModel?: OpenAI.ChatModel;
+    // Source language for translations
+    sourceLocale: Locale;
+    
+    // Languages you want to translate into
+    targetLocales: Locale[];
+    
+    // Directory containing your locale files
+    localesPath: string;
+    
+    // Namespaces to exclude from translation
+    ignoreNamespaces?: string[];
+    
+    // Your OpenAI API key
+    // Get it at: https://platform.openai.com/api-keys
+    openAiKey?: string;
+    
+    // OpenAI model to use (defaults to "gpt-4")
+    chatGptModel?: OpenAI.ChatModel;
+    
+    /**
+     * Custom prompt to ChatGPT
+     * Use it if you need to include more context
+     *
+     * @param locale - current locale that is being translated, for example - "en"
+     * @param json - key-value json pairs, for example {"hello": "Hello!", "saveBtnText": "Click to save"} etc.
+     * @return string - a string that will be passed as prompt to ChatGPT
+     */
+    customPrompt?: (locale: string, json: string) => string;
 }
 ```
 

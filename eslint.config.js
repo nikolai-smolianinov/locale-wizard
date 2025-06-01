@@ -56,6 +56,7 @@ module.exports = [
       '@typescript-eslint/no-unused-expressions': 'off',
       'unicorn/no-process-exit': 'off',
       'unicorn/no-array-reduce': 'off',
+      'unicorn/prevent-abbreviations': 'off',
     },
 
     settings: {

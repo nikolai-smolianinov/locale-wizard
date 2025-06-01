@@ -17,8 +17,11 @@ const bootstrap = async () => {
   const wizard = new LocaleWizard({
     sourceLocale: "en",
     targetLocales: ["ru", "es", "de"],
+    ignoreNamespaces: ["inter"],
     localesPath: "locales",
     openAiKey: openAiKey,
+    customPrompt: (locale, json) =>
+      `переведи json "${json}" на локаль "${locale}"`,
   });
 
   await wizard.removeExtraKeys();
