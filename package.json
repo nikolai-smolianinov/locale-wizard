@@ -1,6 +1,6 @@
 {
   "name": "locale-wizard",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "type": "module",
   "description": "Automatic JSON localization files translator",
   "repository": "https://github.com/nikolai-smolianinov/locale-wizard",
