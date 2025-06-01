@@ -5,8 +5,9 @@ import { getValueByPath } from "@/utils/get-value-by-path";
 export function getAllLocaleKeyValues(
   path: string,
   locale: string,
+  ignoredNamespaces: string[],
 ): Record<string, string> {
-  const files = getLocaleNamespaces(path, locale);
+  const files = getLocaleNamespaces(path, locale, ignoredNamespaces);
 
   let allKeys: Record<string, string> = {};
 

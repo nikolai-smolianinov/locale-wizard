@@ -2,9 +2,15 @@ import fs from "node:fs";
 import path from "node:path";
 import { logger } from "@/logger";
 
-export const getLocaleNamespaces = (directory: string, locale: string) => {
+export const getLocaleNamespaces = (
+  directory: string,
+  locale: string,
+  ignoredNamespaces: string[],
+) => {
   try {
-    return fs.readdirSync(`${directory}/${locale}`);
+    return fs
+      .readdirSync(`${directory}/${locale}`)
+      .filter((file) => !ignoredNamespaces.includes(file.split(".json")[0]));
   } catch {
     return [];
   }

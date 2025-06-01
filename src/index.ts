@@ -38,6 +38,7 @@ export class LocaleWizard {
     const mainLocaleFiles = getLocaleNamespaces(
       config.localesPath,
       config.sourceLocale,
+      this.ignoreNamespaces,
     );
 
     if (mainLocaleFiles.length === 0) {
@@ -52,6 +53,7 @@ export class LocaleWizard {
     this.allMainLocaleKeysValuePairs = getAllLocaleKeyValues(
       this.localesPath,
       config.sourceLocale,
+      this.ignoreNamespaces,
     );
 
     for (const locale of config.targetLocales) {
@@ -109,7 +111,11 @@ export class LocaleWizard {
     for (const [locale, { extraKeys }] of Object.entries(
       this.targetLocalesMeta,
     )) {
-      const files = getLocaleNamespaces(this.localesPath, locale);
+      const files = getLocaleNamespaces(
+        this.localesPath,
+        locale,
+        this.ignoreNamespaces,
+      );
       for (const file of files) {
         const filePath = `${this.localesPath}/${locale}/${file}`;
         const content = getJsonFromFile(filePath);

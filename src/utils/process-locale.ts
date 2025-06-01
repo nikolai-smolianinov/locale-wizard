@@ -6,7 +6,11 @@ export function processLocale(this: LocaleWizard, locale: string) {
   const missingKeys = [];
   const extraKeys = [];
 
-  const keyValuePairs = getAllLocaleKeyValues(this.localesPath, locale);
+  const keyValuePairs = getAllLocaleKeyValues(
+    this.localesPath,
+    locale,
+    this.ignoreNamespaces,
+  );
 
   for (const key of Object.keys(keyValuePairs)) {
     const existsInMainLocale =
