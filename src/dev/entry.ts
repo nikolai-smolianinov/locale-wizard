@@ -16,7 +16,7 @@ if (!openAiKey) {
 const bootstrap = async () => {
   const wizard = new LocaleWizard({
     sourceLocale: "ru",
-    targetLocales: ["es", "en"],
+    targetLocales: ["en"],
     ignoreNamespaces: ["inter"],
     localesPath: "locales",
     openAiKey: openAiKey,

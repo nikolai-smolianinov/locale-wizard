@@ -1,6 +1,8 @@
 export const flattenToNested = (object: Record<string, string>): object => {
   const result: any = {};
 
+  console.log("flaten", object);
+
   for (const key in object) {
     const parts = key.split(".");
 
@@ -35,6 +37,6 @@ export const flattenToNested = (object: Record<string, string>): object => {
       }
     }
   }
-
+  console.log("nested", result);
   return result;
 };
