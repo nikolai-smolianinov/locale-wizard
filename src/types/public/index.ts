@@ -105,8 +105,5 @@ export interface WizardConfig {
    * @param keyValuePairs - key-value pairs, for example {hello: "Hello!", saveBtnText: "Click to save"} etc.
    * @return string - a string that will be passed as prompt to ChatGPT
    */
-  customPrompt?: (
-    locale: string,
-    keyValuePairs: Record<string, string>,
-  ) => string;
+  customPrompt?: (locale: string) => string;
 }

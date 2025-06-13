@@ -59,12 +59,15 @@ export async function translateChunk(
   }
 
   const prompt = this.customPrompt
-    ? this.customPrompt(targetLocale, chunk)
-    : getPrompt(chunk, targetLocale);
+    ? this.customPrompt(targetLocale)
+    : getPrompt(targetLocale);
 
   try {
     const completion = await this.openai.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        { role: "system", content: prompt },
+        { role: "user", content: JSON.stringify(chunk) },
+      ],
       model: this.chatGptModel,
       response_format: { type: "json_object" },
     });

@@ -23,9 +23,7 @@ export class LocaleWizard {
   readonly targetLocales: string[] = [];
   readonly localesPath: string = "";
   readonly ignoreNamespaces: string[] = [];
-  readonly customPrompt:
-    | null
-    | ((locale: string, json: Record<string, string>) => string) = null;
+  readonly customPrompt: null | ((locale: string) => string) = null;
   readonly allMainLocaleKeysValuePairs: Record<string, string> = {};
   readonly targetLocalesMeta: Record<string, TargetLocaleMeta> = {};
   private readonly mainLocaleFiles: string[] = [];
