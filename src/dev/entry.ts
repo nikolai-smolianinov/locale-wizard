@@ -20,11 +20,10 @@ const bootstrap = async () => {
     ignoreNamespaces: ["inter"],
     localesPath: "locales",
     openAiKey: openAiKey,
-    customPrompt: (locale, keyValuePairs) =>
-      `переведи json "${JSON.stringify(keyValuePairs)}" на локаль "${locale}"`,
+    customPrompt: (locale) => `переведи json на локаль "${locale}"`,
   });
 
-  await wizard.removeExtraKeys();
+  // await wizard.removeExtraKeys();
   await wizard.translate();
 };
 
